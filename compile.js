@@ -12,8 +12,27 @@ const motionsPath = path.resolve(__dirname,'contracts', 'Motions.sol');
 
 const contractsSources = {
     'CommunityMotions.sol': fs.readFileSync(communityMotionsPath, 'utf8'),
-    'Motionst.sol': fs.readFileSync(motionsPath, 'utf8')
+    'Motions.sol': fs.readFileSync(motionsPath, 'utf8')
 }
+
+const jsonContractsSources = JSON.stringify({
+    language: 'Solidity',
+    sources: {
+        'CommunityMotions.sol': {
+            content: contractsSources['CommunityMotions.sol']
+        },
+        'Motions.sol': {
+            content: contractsSources['Motions.sol']
+        }
+    },
+    settings: { 
+        outputSelection: {
+            '*': {
+                '*': ['*'],
+            },
+        },
+    },
+});
 
 const output = solc.compile({contractsSources},1);
 

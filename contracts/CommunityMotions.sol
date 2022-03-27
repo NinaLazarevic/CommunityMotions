@@ -1,7 +1,9 @@
-pragma solidity >=0.4.22;
+// SPDX-License-Identifier: UNLICENSED
+
+pragma solidity 0.5.16;
 
 contract CommunityMotions {
-     address public campaignCreator;
+     address payable public campaignCreator;
      string public campaignDescription;
      string public campaignTitle;
      uint public limitAmount;
@@ -9,15 +11,11 @@ contract CommunityMotions {
      address[] public donors;
      mapping(address => uint) public donations;
      
-     constructor(string title, string description, uint limit, address creator) public {
+     constructor(string memory title, string memory description, uint limit, address payable creator) public {
          campaignCreator = creator;
          campaignDescription = description;
          campaignTitle = title;
          limitAmount = limit;
-     }
-     
-     function () public payable{
-         donate();
      }
      
      function donate() public payable isLimitValid {
@@ -28,11 +26,7 @@ contract CommunityMotions {
          donations[msg.sender] += msg.value;
      }
      
-     function getDonors() view public returns(address[]){
-         return donors;
-     }
-     
-     function totalDonated() view public returns(uint){
+     function totalDonated() view public returns(uint) {
          uint donated = 0;
          for(uint i = 0; i< donors.length; i++)
          {
@@ -41,7 +35,7 @@ contract CommunityMotions {
          return donated;
      }
      
-     modifier isLimitValid(){
+     modifier isLimitValid() {
         require(msg.value >= limitAmount, "Insufficient donation amount.");
         _;
     }
